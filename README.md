@@ -31,6 +31,10 @@ A production-ready chatbot API built with FastAPI, featuring Redis caching, conv
 **File:** [`LLM_TitanicDataExploration.ipynb`](./LLM_TitanicDataExploration.ipynb)  
 An innovative approach to data analysis using LangChain and OpenAI to explore the Titanic dataset. This project demonstrates how to leverage large language models to perform data analysis tasks through natural language queries.
 
+### College Data Analysis with OpenAI Function Calling
+**File:** [`College Analysis.ipynb`](./College%20Analysis.ipynb)  
+A specialized data analysis project that extracts structured information about colleges using OpenAI's function calling capabilities. This notebook demonstrates integration with Google Sheets, API usage, and structured data extraction for educational institution analysis.
+
 ### Vertex AI Challenge Lab
 **Files:** [`vertex-challenge-lab-v1.0.0.ipynb`](./vertex-challenge-lab-v1.0.0.ipynb)  
 A complete solution for the Vertex AI Challenge Lab, showcasing how to build, train, and deploy machine learning models on Google Cloud's Vertex AI platform.
@@ -42,6 +46,10 @@ A project that leverages Gemini's multimodal capabilities to analyze and extract
 ### Churn Prediction with Vertex AI
 **File:** [`churn classifier vertex.ipynb`](./churn%20classifier%20vertex.ipynb)  
 A machine learning pipeline for predicting customer churn, implemented on Google Cloud's Vertex AI platform. The notebook includes data preprocessing, model training, and deployment steps.
+
+### GPU-Accelerated Customer Matching
+**File:** [`cudf-cuml-customer matching.ipynb`](./cudf-cuml-customer%20matching.ipynb)  
+A high-performance customer matching solution using RAPIDS libraries (cuDF and cuML) that leverages GPU acceleration for data processing and analysis. This project demonstrates expertise in handling large datasets efficiently with specialized hardware acceleration.
 
 ## Deep Learning Projects
 
