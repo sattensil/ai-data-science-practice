@@ -1,82 +1,63 @@
-# ML, AI & Data Science
+# 🚀 AI & Data Science Learning Repository
 
-> **Important Note**: This repository primarily contains learning resources, tutorials, and practice implementations that I've used to develop my skills. These projects reflect the tools, techniques, and approaches I've successfully applied in professional settings. Due to confidentiality agreements, my actual employer projects cannot be shared publicly.
+This repository contains a collection of training materials, tutorials, and personal projects focused on AI, machine learning, and data science. It includes both Google Cloud training materials and personal implementations of various techniques and algorithms.
 
-## Machine Learning & AI Projects
+## 📂 Repository Structure by Folder
 
-### Multimodal RAG with Gemini API
-**File:** [`intro_multimodal_rag.ipynb`](./intro_multimodal_rag.ipynb)  
-A comprehensive implementation of Multimodal Retrieval Augmented Generation using Google's Gemini API. This project demonstrates how to build a document search engine that can process both text and images, enabling advanced Q&A capabilities over financial documents.
+## 🧠 LLM & Generative AI
 
-### Vertex AI Challenge Lab
-**Files:** [`vertex-challenge-lab-v1.0.0.ipynb`](./vertex-challenge-lab-v1.0.0.ipynb)  
-A complete solution for the Vertex AI Challenge Lab, showcasing how to build, train, and deploy machine learning models on Google Cloud's Vertex AI platform.
+Explore the exciting world of Large Language Models and generative AI! This section contains implementations of multimodal RAG, research agents, and more.
 
-### Gemini Multimodal Document Inspection
-**File:** [`inspect_rich_documents_w_gemini_multimodality_and_multimodal_rag.ipynb`](./inspect_rich_documents_w_gemini_multimodality_and_multimodal_rag.ipynb)  
-A project that leverages Gemini's multimodal capabilities to analyze and extract information from rich documents containing both text and images.
+- [**✨ Multimodal RAG with Gemini API**](./LLM/intro_multimodal_rag.ipynb) - Implementation of RAG using Google's Gemini API for processing both text and images
+- [**📊 LLM for Data Exploration**](./LLM/LLM_TitanicDataExploration.ipynb) - Using LLMs to assist with data analysis on the Titanic dataset
+- [**🔍 Anthropic Research Agent**](./LLM/Anthropic%20Research%20Agent%20without%20MCP.ipynb) - Research agent implementation using Anthropic's Claude
+- [**📄 Document Analysis with Gemini**](./LLM/inspect_rich_documents_w_gemini_multimodality_and_multimodal_rag.ipynb) - Analyzing rich documents with multimodal capabilities
 
-### Churn Prediction with Vertex AI
-**File:** [`churn classifier vertex.ipynb`](./churn%20classifier%20vertex.ipynb)  
-A machine learning pipeline for predicting customer churn, implemented on Google Cloud's Vertex AI platform. The notebook includes data preprocessing, model training, and deployment steps.
+## 📈 ML Algorithms
 
-## Deep Learning Projects
+Dive into various machine learning algorithms and techniques! From customer predictions to decision trees, this section has it all.
 
-### PyTorch Neural Networks
-**Files:** [`1.1_1Dtensors_v2.ipynb`](./1.1_1Dtensors_v2.ipynb), [`1.1_2_Two-Dimensional_Tensors_v2.ipynb`](./1.1_2_Two-Dimensional_Tensors_v2.ipynb), [`1.2derivativesandGraphsinPytorch_v2.ipynb`](./1.2derivativesandGraphsinPytorch_v2.ipynb)  
-A series of notebooks demonstrating PyTorch fundamentals, from tensor operations to building neural networks and understanding backpropagation.
+- [**💰 Customer Lifetime Value Prediction**](./ML%20Algorithms/CLV%20prediction.ipynb) - Predicting customer value using advanced ML techniques
+- [**🔄 Churn Classifier with Vertex AI**](./ML%20Algorithms/churn%20classifier%20vertex.ipynb) - End-to-end ML pipeline for predicting customer churn
+- [**🌳 Decision Tree Implementation**](./ML%20Algorithms/Decision%20Tree.ipynb) - Decision tree algorithm implementation from scratch
+- [**🚀 Gradient Boosting Regression**](./ML%20Algorithms/Gradient%20Boosting%20Regression.ipynb) - Advanced regression techniques
 
-### TensorFlow in 10 Minutes
-**File:** [`Tensorflow in 10.ipynb`](./Tensorflow%20in%2010.ipynb)  
-A concise introduction to TensorFlow, covering the essential concepts and components needed to get started with this popular deep learning framework.
+## 🧮 Neural Networks
 
-### Keras Advanced Feature Engineering
-**File:** [`Misc GCP/4_keras_adv_feat_eng.ipynb`](./Misc%20GCP/4_keras_adv_feat_eng.ipynb)  
-Advanced techniques for feature engineering using Keras preprocessing layers, demonstrating how to build efficient input pipelines for deep learning models.
+Explore neural network implementations using different frameworks! This section is divided into PyTorch and TensorFlow subsections.
 
-### Minimum Difference Keras Implementation
-**File:** [`min_diff_keras.ipynb`](./min_diff_keras.ipynb)  
-An implementation of the Minimum Difference loss function in Keras for fairness-aware machine learning, helping to reduce bias in model predictions.
+- [**⏱️ TensorFlow in 10 Minutes**](./NN/TensorFlow/Tensorflow%20in%2010.ipynb) - Quick introduction to TensorFlow fundamentals
+- [**🔬 BERT with Kubeflow**](./NN/TensorFlow/Bert%20Kubeflow.ipynb) - Implementing BERT models with Kubeflow pipelines
+- [**⚡ PyTorch Tensor Operations**](./NN/PyTorch/1.1_1Dtensors_v2.ipynb) - Fundamentals of PyTorch tensor operations
+- [**🧩 Neural Network Fundamentals**](./NN/TensorFlow/neural_network.ipynb) - Core concepts of neural networks
 
-## Data Analysis & Visualization
+## 📊 Data Visualization
 
-### LeetCode Pareto Solutions
-**File:** [`LeetcodePareto.ipynb`](./LeetcodePareto.ipynb)  
-A collection of optimized solutions to common LeetCode problems, following the Pareto principle to focus on the most important and frequently asked coding interview questions.
+Create stunning visualizations with these tools and techniques! From basic charts to interactive dashboards.
 
-### Customer Lifetime Value Prediction
-**File:** [`CLV prediction.ipynb`](./CLV%20prediction.ipynb)  
-A comprehensive analysis and prediction model for customer lifetime value, combining statistical methods and machine learning to forecast customer value over time.
+- [**📉 Matplotlib Scripting**](./Visualizations/Matplotlib%20Scripting.ipynb) - Advanced matplotlib techniques for beautiful static visualizations
+- [**🖥️ Interactive Dash Applications**](./Visualizations/dash_interactivity.py) - Building interactive web dashboards with Dash
+- [**🗺️ Geographic Mapping**](./Visualizations/Generating-Maps-in-Python.ipynb) - Creating informative maps in Python
+- [**📊 Advanced Chart Types**](./Visualizations/Waffle-Charts-Word-Clouds-and-Regression-Plots.ipynb) - Waffle charts, word clouds, and regression plots
 
-### Data Visualization Masterclass
-**Files:** [`Area-Plots-Histograms-and-Bar-Charts.ipynb`](./Area-Plots-Histograms-and-Bar-Charts.ipynb), [`Pie-Charts-Box-Plots-Scatter-Plots-and-Bubble-Plots.ipynb`](./Pie-Charts-Box-Plots-Scatter-Plots-and-Bubble-Plots.ipynb), [`Waffle-Charts-Word-Clouds-and-Regression-Plots.ipynb`](./Waffle-Charts-Word-Clouds-and-Regression-Plots.ipynb)  
-A series of notebooks covering advanced data visualization techniques using matplotlib, seaborn, and other libraries, with practical examples and best practices.
+## 💻 Coding and Data Engineering
 
-### Plotly Basics
-**File:** [`4.3_Plotly_Basics.jupyterlite.ipynb`](./4.3_Plotly_Basics.jupyterlite.ipynb)  
-An introduction to creating interactive visualizations with Plotly, covering basic chart types and customization options.
+Sharpen your coding skills and learn data engineering practices! From coding challenges to data pipelines.
 
-## Cloud & Big Data
+- [**🧩 LeetCode Solutions**](./Coding%20and%20Data/LeetcodePareto.ipynb) - Optimized solutions to common LeetCode problems
+- [**🔄 Data Ingestion Pipeline**](./Coding%20and%20Data/data_ingestion.py) - Apache Beam pipeline for processing data and loading to BigQuery
+- [**📋 JSON Parsing**](./Coding%20and%20Data/json_parsing_review.ipynb) - Working with complex JSON data structures
+- [**🔍 Data Exploration Techniques**](./Coding%20and%20Data/workbench_explore_data.ipynb) - Methods for exploring and understanding datasets
 
-### BigQuery ML Feature Engineering
-**File:** [`1_bqml_basic_feat_eng.ipynb`](./1_bqml_basic_feat_eng.ipynb)  
-A demonstration of feature engineering techniques using BigQuery ML, showing how to prepare data for machine learning directly in Google's data warehouse.
+## 🔗 External Resources
 
-### Feature Store Streaming Ingestion
-**File:** [`Misc GCP/feature_store_streaming_ingestion_sdk.ipynb`](./Misc%20GCP/feature_store_streaming_ingestion_sdk.ipynb)  
-A project showcasing how to set up streaming data ingestion into a feature store, enabling real-time machine learning applications.
+- [☁️ Google Cloud AI Documentation](https://cloud.google.com/ai)
+- [🔥 PyTorch Documentation](https://pytorch.org/docs/stable/index.html)
+- [📊 TensorFlow Documentation](https://www.tensorflow.org/api_docs)
+- [📈 Plotly Documentation](https://plotly.com/python/)
+- [🔄 Apache Beam Documentation](https://beam.apache.org/documentation/)
 
-### TPU Speed Data Pipelines
-**File:** [`Misc GCP/tpu_speed_data_pipelines.ipynb`](./Misc%20GCP/tpu_speed_data_pipelines.ipynb)  
-An advanced implementation of high-performance data pipelines optimized for Tensor Processing Units (TPUs), demonstrating how to achieve maximum throughput for large-scale deep learning training.
+---
 
-### TensorFlow Data Validation
-**Files:** [`Misc GCP/tfdv_advanced_taxi.ipynb`](./Misc%20GCP/tfdv_advanced_taxi.ipynb), [`Misc GCP/tfdv_basic_spending.ipynb`](./Misc%20GCP/tfdv_basic_spending.ipynb)  
-Notebooks demonstrating how to use TensorFlow Data Validation for data quality checking and schema validation in ML pipelines.
-
-## Miscellaneous Projects
-
-### Dash Interactive Applications
-**Files:** [`dash_basics.py`](./dash_basics.py), [`dash_interactivity.py`](./dash_interactivity.py), [`dash_layout.py`](./dash_layout.py), [`Dash_Auto.py`](./Dash_Auto.py)  
-A collection of Dash applications showcasing how to build interactive web-based data visualizations and dashboards with Python.
+> **Note**: This repository primarily contains learning resources, tutorials, and practice implementations from Google Cloud training as well as personal projects. Due to confidentiality agreements, actual employer projects cannot be shared publicly.
 
