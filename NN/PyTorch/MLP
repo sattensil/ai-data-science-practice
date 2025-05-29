@@ -1,0 +1,237 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+# MLP (Multi-Layer Perceptron) Architecture
+# Common applications: Classification, regression, tabular data, simple pattern recognition
+# Input shape: [batch_size, input_features]
+
+class MLPModel(nn.Module):
+    """
+    Multi-Layer Perceptron (MLP) model.
+    
+    A basic feed-forward neural network with fully connected layers.
+    The simplest form of deep neural network - layers of neurons where each neuron
+    in a layer is connected to every neuron in the previous layer.
+    """
+    def __init__(self, input_size, hidden_sizes, output_size, dropout_rate=0.2):
+        """
+        Initialize the MLP model.
+        
+        Parameters:
+        - input_size: Number of input features
+        - hidden_sizes: List of hidden layer sizes (number of neurons in each hidden layer)
+        - output_size: Number of output classes/values
+        - dropout_rate: Probability of dropping neurons during training
+        """
+        super(MLPModel, self).__init__()
+        
+        # Store model parameters
+        self.input_size = input_size
+        self.hidden_sizes = hidden_sizes
+        self.output_size = output_size
+        self.dropout_rate = dropout_rate
+        
+        # Create a list to hold all layers
+        layers = []
+        
+        # Input layer to first hidden layer
+        # nn.Linear parameters:
+        # - in_features: Size of each input sample
+        # - out_features: Size of each output sample
+        # - bias: If set to False, the layer will not learn an additive bias
+        layers.append(nn.Linear(input_size, hidden_sizes[0]))
+        
+        # Add activation function after first layer
+        # ReLU: f(x) = max(0, x) - sets all negative values to zero
+        layers.append(nn.ReLU())
+        
+        # Add dropout to prevent overfitting
+        # Randomly zeroes some of the elements with probability dropout_rate
+        layers.append(nn.Dropout(dropout_rate))
+        
+        # Add additional hidden layers
+        for i in range(len(hidden_sizes) - 1):
+            # Add linear transformation
+            layers.append(nn.Linear(hidden_sizes[i], hidden_sizes[i+1]))
+            # Add activation function
+            layers.append(nn.ReLU())
+            # Add dropout
+            layers.append(nn.Dropout(dropout_rate))
+        
+        # Output layer
+        # No activation function here - will be applied in the forward method
+        # depending on the task (classification vs regression)
+        layers.append(nn.Linear(hidden_sizes[-1], output_size))
+        
+        # Create a sequential container of all layers
+        # nn.Sequential: A sequential container that runs modules in the order they are added
+        self.model = nn.Sequential(*layers)
+        
+    def forward(self, x):
+        """
+        Forward pass through the network.
+        
+        Parameters:
+        - x: Input tensor of shape [batch_size, input_size]
+             Example: [32, 784] for a batch of 32 flattened MNIST images (28x28=784)
+        
+        Returns:
+        - x: Output tensor of shape [batch_size, output_size]
+        """
+        # Input shape: [batch_size, input_size]
+        
+        # Pass input through all layers in sequence
+        x = self.model(x)
+        
+        # Note: For classification tasks, you would typically apply softmax
+        # For regression tasks, the raw output is used
+        # We don't apply softmax here if using nn.CrossEntropyLoss which includes LogSoftmax
+        
+        return x
+    
+    def predict(self, x, task='classification'):
+        """
+        Make predictions using the trained model.
+        
+        Parameters:
+        - x: Input tensor of shape [batch_size, input_size]
+        - task: 'classification' or 'regression'
+        
+        Returns:
+        - predictions: Model predictions
+        """
+        # Set model to evaluation mode
+        self.eval()
+        
+        # Disable gradient computation for inference
+        with torch.no_grad():
+            # Forward pass
+            outputs = self.forward(x)
+            
+            if task == 'classification':
+                # For classification, return the class with highest probability
+                # torch.max returns (values, indices) - we want indices
+                _, predictions = torch.max(outputs, dim=1)
+                return predictions
+            else:
+                # For regression, return the raw output
+                return outputs
+
+
+# Example usage - Classification:
+'''
+def train_mlp_classification():
+    # Model parameters
+    input_size = 784       # e.g., flattened 28x28 MNIST images
+    hidden_sizes = [512, 256, 128]  # Three hidden layers
+    output_size = 10       # 10 classes for MNIST digits
+    dropout_rate = 0.2     # 20% dropout probability
+    
+    # Create model instance
+    model = MLPModel(input_size, hidden_sizes, output_size, dropout_rate)
+    
+    # Define loss function and optimizer
+    criterion = nn.CrossEntropyLoss()  # For classification tasks
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    
+    # Example input: batch of flattened images
+    batch_size = 32
+    example_input = torch.randn(batch_size, input_size)  # Random data for illustration
+    
+    # Training loop (simplified)
+    model.train()  # Set model to training mode
+    
+    # Forward pass
+    outputs = model(example_input)
+    
+    # Assume we have labels
+    labels = torch.randint(0, output_size, (batch_size,))
+    
+    # Compute loss
+    loss = criterion(outputs, labels)
+    
+    # Backward pass and optimization
+    optimizer.zero_grad()  # Zero the parameter gradients
+    loss.backward()        # Compute gradients
+    optimizer.step()       # Update parameters
+    
+    # Evaluation (simplified)
+    model.eval()  # Set model to evaluation mode
+    
+    # Make predictions
+    with torch.no_grad():  # Disable gradient computation
+        test_input = torch.randn(batch_size, input_size)
+        predictions = model.predict(test_input, task='classification')
+'''
+
+
+# Example usage - Regression:
+'''
+def train_mlp_regression():
+    # Model parameters
+    input_size = 10        # Number of features
+    hidden_sizes = [64, 32]  # Two hidden layers
+    output_size = 1        # Single output value for regression
+    dropout_rate = 0.1     # 10% dropout probability
+    
+    # Create model instance
+    model = MLPModel(input_size, hidden_sizes, output_size, dropout_rate)
+    
+    # Define loss function and optimizer
+    criterion = nn.MSELoss()  # Mean Squared Error for regression tasks
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    
+    # Example input: batch of feature vectors
+    batch_size = 32
+    example_input = torch.randn(batch_size, input_size)  # Random data for illustration
+    
+    # Training loop (simplified)
+    model.train()  # Set model to training mode
+    
+    # Forward pass
+    outputs = model(example_input)
+    
+    # Assume we have target values
+    targets = torch.randn(batch_size, output_size)
+    
+    # Compute loss
+    loss = criterion(outputs, targets)
+    
+    # Backward pass and optimization
+    optimizer.zero_grad()  # Zero the parameter gradients
+    loss.backward()        # Compute gradients
+    optimizer.step()       # Update parameters
+    
+    # Evaluation (simplified)
+    model.eval()  # Set model to evaluation mode
+    
+    # Make predictions
+    with torch.no_grad():  # Disable gradient computation
+        test_input = torch.randn(batch_size, input_size)
+        predictions = model.predict(test_input, task='regression')
+'''
+
+
+# Comparison with other architectures:
+'''
+# Key differences from other neural network architectures:
+
+1. MLP vs CNN:
+   - MLP: Fully connected layers only, no spatial awareness, input is flattened
+   - CNN: Uses convolutional layers to capture spatial patterns, preserves spatial structure
+
+2. MLP vs RNN:
+   - MLP: No memory of previous inputs, processes each input independently
+   - RNN: Maintains hidden state to remember previous inputs, processes sequences
+
+3. MLP vs Transformer:
+   - MLP: Simple feed-forward architecture with no attention mechanism
+   - Transformer: Uses self-attention to model relationships between all positions in a sequence
+
+4. When to use MLP:
+   - Tabular data where features don't have spatial or sequential relationships
+   - Simple classification or regression tasks
+   - As components within more complex architectures (e.g., fully connected layers in CNNs)
+   - When computational resources are limited
+'''

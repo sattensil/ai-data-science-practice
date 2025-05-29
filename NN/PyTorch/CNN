@@ -1,0 +1,98 @@
+import torch
+import torch.nn as nn
+
+# CNN (Convolutional Neural Network) Architecture
+# Common applications: Image classification, object detection, segmentation
+# Fixed-size inputs (typically): [batch_size, channels, height, width]
+
+class CNNModel(nn.Module):
+    def __init__(self):
+        super(CNNModel, self).__init__()
+        
+        # Convolutional layers (2D convolutions for image data)
+        # nn.Conv2d parameters:
+        # - in_channels: Number of input channels (1 for grayscale, 3 for RGB)
+        # - out_channels: Number of output feature maps (filters)
+        # - kernel_size: Size of the convolving kernel (filter size)
+        # - stride: Step size of the convolution (default=1)
+        # - padding: Zero-padding added to both sides (default=0)
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=3)
+        # After conv1: output shape = [batch_size, 32, height-2, width-2]
+        
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3)
+        # After conv2: output shape = [batch_size, 64, height-4, width-4]
+        
+        # Pooling layer - reduces spatial dimensions
+        # nn.MaxPool2d parameters:
+        # - kernel_size: Size of the window to take max over
+        # - stride: Step size of the window (default=kernel_size)
+        self.pool = nn.MaxPool2d(kernel_size=2)
+        # After each pool: output dimensions are halved
+        
+        # Fully connected layers (linear transformations)
+        # nn.Linear parameters:
+        # - in_features: Size of each input sample
+        # - out_features: Size of each output sample
+        # 64*5*5 assumes the input image is processed to this size after convolutions and pooling
+        self.fc1 = nn.Linear(64 * 5 * 5, 128)
+        self.fc2 = nn.Linear(128, 10)  # 10 output classes (e.g., for MNIST digits 0-9)
+        
+        # Activation function - introduces non-linearity
+        # ReLU: f(x) = max(0, x) - sets all negative values to zero
+        self.relu = nn.ReLU()
+        
+        # Dropout - prevents overfitting by randomly zeroing some neurons
+        # nn.Dropout parameters:
+        # - p: Probability of an element to be zeroed (set to 0)
+        self.dropout = nn.Dropout(0.25)  # 25% of neurons will be deactivated randomly during training
+        
+    def forward(self, x):
+        # Input x shape: [batch_size, channels, height, width]
+        # Example: [32, 1, 28, 28] for a batch of 32 MNIST grayscale images
+        
+        # First convolution + activation + pooling
+        x = self.conv1(x)           # Apply first convolution
+        x = self.relu(x)            # Apply ReLU activation
+        x = self.pool(x)            # Apply max pooling
+        # After this step: x shape approximately [batch_size, 32, height/2-1, width/2-1]
+        
+        # Second convolution + activation + pooling
+        x = self.conv2(x)           # Apply second convolution
+        x = self.relu(x)            # Apply ReLU activation
+        x = self.pool(x)            # Apply max pooling
+        # After this step: x shape approximately [batch_size, 64, height/4-2, width/4-2]
+        
+        # Flatten the output for the fully connected layer
+        # -1 infers the batch size dimension automatically
+        x = x.view(-1, 64 * 5 * 5)  # Reshape to [batch_size, 64*5*5]
+        
+        # Fully connected layers
+        x = self.fc1(x)             # First fully connected layer
+        x = self.relu(x)            # Apply ReLU activation
+        x = self.dropout(x)         # Apply dropout (only during training)
+        x = self.fc2(x)             # Second fully connected layer (output layer)
+        
+        # No softmax here if using CrossEntropyLoss which includes LogSoftmax + NLLLoss
+        return x
+
+# Example usage:
+'''
+def train_cnn():
+    # Create model instance
+    model = CNNModel()
+    
+    # Define loss function and optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    
+    # Example input: batch of 32 grayscale images of size 28x28
+    example_input = torch.randn(32, 1, 28, 28)
+    
+    # Forward pass
+    outputs = model(example_input)
+    
+    # If we had labels (targets)
+    # loss = criterion(outputs, targets)
+    # loss.backward()
+    # optimizer.step()
+'''

@@ -1,0 +1,130 @@
+import torch
+import torch.nn as nn
+
+# RNN (Recurrent Neural Network) Architecture
+# Common applications: Sequence data processing such as text, time series, speech
+# Variable-length inputs: [batch_size, sequence_length, input_size]
+
+class RNNModel(nn.Module):
+    def __init__(self, input_size, hidden_size, num_layers, num_classes):
+        """
+        Initialize the RNN model.
+        
+        Parameters:
+        - input_size: Number of features in input X at each time step
+                     (e.g., embedding dimension for text, or number of features for time series)
+        - hidden_size: Number of features in the hidden state h
+                      (determines the capacity/expressiveness of the model)
+        - num_layers: Number of recurrent layers stacked on each other
+                     (deeper networks can learn more complex patterns)
+        - num_classes: Number of output classes
+                      (e.g., number of possible next words in language model)
+        """
+        super(RNNModel, self).__init__()
+        
+        # RNN layer - processes sequential data
+        # nn.RNN parameters:
+        # - input_size: Number of expected features in the input x
+        # - hidden_size: Number of features in the hidden state h
+        # - num_layers: Number of recurrent layers
+        # - batch_first: If True, input shape is (batch, seq, feature)
+        #               If False, input shape is (seq, batch, feature)
+        # - bidirectional: If True, becomes a bidirectional RNN (default=False)
+        # - dropout: Dropout probability for intermediate layers (default=0)
+        self.rnn = nn.RNN(input_size=input_size, 
+                          hidden_size=hidden_size, 
+                          num_layers=num_layers, 
+                          batch_first=True)  # batch_first=True makes input/output shape [batch, seq, feature]
+        
+        # Fully connected layer - maps hidden state to output classes
+        # nn.Linear parameters:
+        # - in_features: Size of each input sample (hidden_size)
+        # - out_features: Size of each output sample (num_classes)
+        self.fc = nn.Linear(hidden_size, num_classes)
+        
+    def forward(self, x):
+        """
+        Forward pass through the network.
+        
+        Parameters:
+        - x: Input tensor of shape [batch_size, sequence_length, input_size]
+             Example: [32, 100, 300] for a batch of 32 sequences, each with 100 time steps
+                     and 300 features per time step (like word embeddings)
+        
+        Returns:
+        - out: Output tensor of shape [batch_size, num_classes]
+        """
+        # x shape: [batch_size, sequence_length, input_size]
+        
+        # Initialize hidden state with zeros
+        # h0 shape: [num_layers, batch_size, hidden_size]
+        # For bidirectional RNNs, first dimension would be [num_layers*2]
+        batch_size = x.size(0)
+        h0 = torch.zeros(self.rnn.num_layers, batch_size, self.rnn.hidden_size).to(x.device)
+        
+        # Forward propagate the RNN
+        # out: tensor containing the output features from the last layer for each time step
+        # hn: tensor containing the hidden state for the last time step
+        out, hn = self.rnn(x, h0)
+        # out shape: [batch_size, sequence_length, hidden_size]
+        # hn shape: [num_layers, batch_size, hidden_size]
+        
+        # We only need the hidden state of the last time step
+        # out[:, -1, :] extracts the last time step for each sequence in the batch
+        # Shape becomes [batch_size, hidden_size]
+        out = self.fc(out[:, -1, :])
+        # out shape after fc: [batch_size, num_classes]
+        
+        return out
+
+# Example usage:
+'''
+def train_rnn():
+    # Model parameters
+    input_size = 300    # Size of each input feature (e.g., word embedding dimension)
+    hidden_size = 128   # Size of hidden state
+    num_layers = 2      # Number of RNN layers stacked together
+    num_classes = 5     # Number of output classes
+    sequence_length = 50  # Length of input sequences
+    batch_size = 32     # Number of sequences in a batch
+    
+    # Create model instance
+    model = RNNModel(input_size, hidden_size, num_layers, num_classes)
+    
+    # Define loss function and optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    
+    # Example input: batch of sequences
+    # Shape: [batch_size, sequence_length, input_size]
+    example_input = torch.randn(batch_size, sequence_length, input_size)
+    
+    # Forward pass
+    outputs = model(example_input)
+    # outputs shape: [batch_size, num_classes]
+    
+    # If we had labels (targets)
+    # targets = torch.randint(0, num_classes, (batch_size,))
+    # loss = criterion(outputs, targets)
+    # loss.backward()
+    # optimizer.step()
+'''
+
+# Other RNN variants in PyTorch:
+'''
+# LSTM (Long Short-Term Memory) - better at capturing long-term dependencies
+lstm = nn.LSTM(input_size=input_size, 
+               hidden_size=hidden_size, 
+               num_layers=num_layers, 
+               batch_first=True)
+# LSTM forward pass requires both hidden state and cell state
+out, (hidden, cell) = lstm(x, (h0, c0))
+
+# GRU (Gated Recurrent Unit) - simpler than LSTM but often similarly effective
+gru = nn.GRU(input_size=input_size, 
+             hidden_size=hidden_size, 
+             num_layers=num_layers, 
+             batch_first=True)
+# GRU forward pass is similar to basic RNN
+out, hidden = gru(x, h0)
+'''
