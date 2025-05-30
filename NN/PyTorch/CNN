@@ -85,14 +85,30 @@ def train_cnn():
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     
-    # Example input: batch of 32 grayscale images of size 28x28
-    example_input = torch.randn(32, 1, 28, 28)
+    # Load your dataset and create data loaders
+    # train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
     
-    # Forward pass
-    outputs = model(example_input)
-    
-    # If we had labels (targets)
-    # loss = criterion(outputs, targets)
-    # loss.backward()
-    # optimizer.step()
+    # Training loop
+    for epoch in range(num_epochs):  # Loop for the specified number of epochs
+        running_loss = 0.0
+        
+        # Iterate over batches
+        for inputs, labels in train_loader:
+            # Zero the parameter gradients
+            optimizer.zero_grad()
+            
+            # Forward pass
+            outputs = model(inputs)
+            
+            # Calculate loss
+            loss = criterion(outputs, labels)
+            
+            # Backward pass and optimize
+            loss.backward()
+            optimizer.step()
+            
+            running_loss += loss.item()
+        
+        # Print statistics after each epoch
+        print(f'Epoch {epoch+1}/{num_epochs}, Loss: {running_loss/len(train_loader):.4f}')
 '''
